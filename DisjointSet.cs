@@ -1,109 +1,108 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace UnionFind
 {
-	internal class Node<T>
-		where T : System.IComparable<T>
-	{
-		public T Data { get; set; }
-		public Node<T> Parent { get; set; }
-		public int Rank { get; set; }
-
-		public Node(T data)
-		{
-			Data = data;
-			Parent = this;
-			Rank = 0;
-		}
-	}
-
-	public class DisjointSet<T> : IEnumerable<T>
-		where T: System.IComparable<T>
+    class Node<T>
+        where T : System.IComparable<T>
     {
-		private Dictionary<T, Node<T>> nodes;
+        public T Data { get; set; }
+        public Node<T> Parent { get; set; }
+        public int Rank { get; set; }
 
-		public int Count { get { return nodes.Count; } }
+        public Node(T data)
+        {
+            Data = data;
+            Parent = this;
+            Rank = 0;
+        }
+    }
+
+    public class DisjointSet<T> : IEnumerable<T>
+        where T : System.IComparable<T>
+    {
+        Dictionary<T, Node<T>> nodes;
+
+        public int Count { get { return nodes.Count; } }
 
         public DisjointSet()
         {
-			nodes = new Dictionary<T, Node<T>>();
+            nodes = new Dictionary<T, Node<T>>();
         }
 
-		public IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-			return nodes.Keys.GetEnumerator();
+            return nodes.Keys.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-			return nodes.Keys.GetEnumerator();
+            return nodes.Keys.GetEnumerator();
         }
 
         public bool ContainsData(T data)
-		{
-			return nodes.ContainsKey(data);
-		}
+        {
+            return nodes.ContainsKey(data);
+        }
 
-		public bool MakeSet(T data)
-		{
-			if (ContainsData(data))
-				return false;
-			
-			nodes.Add(data, new Node<T>(data));
-			return true;
-		}
+        public bool MakeSet(T data)
+        {
+            if (ContainsData(data))
+                return false;
 
-		public bool Union(T dataA, T dataB)
-		{
-			var nodeA = nodes[dataA];
-			var nodeB = nodes[dataB];
+            nodes.Add(data, new Node<T>(data));
+            return true;
+        }
 
-			var parentA = nodeA.Parent;
-			var parentB = nodeB.Parent;
+        public bool Union(T dataA, T dataB)
+        {
+            var nodeA = nodes[dataA];
+            var nodeB = nodes[dataB];
 
-			if (parentA == parentB)
-				return false;
+            var parentA = nodeA.Parent;
+            var parentB = nodeB.Parent;
 
-			if (parentA.Rank >= parentB.Rank)
-			{
-				if (parentA.Rank == parentB.Rank)
-					++parentA.Rank;
+            if (parentA == parentB)
+                return false;
 
-				parentB.Parent = parentA;
-			}
-			else
-			{
-				parentA.Parent = parentB;
-			}
+            if (parentA.Rank >= parentB.Rank)
+            {
+                if (parentA.Rank == parentB.Rank)
+                    ++parentA.Rank;
 
-			return true;
-		}
+                parentB.Parent = parentA;
+            }
+            else
+            {
+                parentA.Parent = parentB;
+            }
+
+            return true;
+        }
 
         public T FindSet(T data)
-		{
-			return FindSet(nodes[data]).Data;
-		}
+        {
+            return FindSet(nodes[data]).Data;
+        }
 
         public bool IsEmpty()
-		{
-			return Count == 0;
-		}
+        {
+            return Count == 0;
+        }
 
         public void Clear()
-		{
-			nodes.Clear();
-		}
+        {
+            nodes.Clear();
+        }
 
         Node<T> FindSet(Node<T> node)
-		{
-			var parent = node.Parent;
-			if (parent == node)
-				return node;
+        {
+            var parent = node.Parent;
+            if (parent == node)
+                return node;
 
-			node.Parent = FindSet(node.Parent);
-			return node.Parent;
-		}      
-	}
+            node.Parent = FindSet(node.Parent);
+            return node.Parent;
+        }
+    }
 }

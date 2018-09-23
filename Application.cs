@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace UnionFind
+﻿namespace UnionFind
 {
     class Application
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
         }
     }
 }
