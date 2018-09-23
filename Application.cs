@@ -2,7 +2,7 @@
 
 namespace UnionFind
 {
-    class MainClass
+    class Application
     {
         public static void Main(string[] args)
         {
